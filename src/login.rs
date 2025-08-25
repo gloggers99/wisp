@@ -3,11 +3,14 @@ use std::sync::{Arc, Mutex};
 use maud::{html, Markup};
 
 use rocket::form::Form;
+use rocket::http::{Cookie, CookieJar};
 use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
-
+use beigebox_core::messages::{INVALID_CREDENTIALS};
 use beigebox_database::database::{Database, UserQuery};
+
+use beigebox_session_manager::session_manager::SessionManager;
 
 #[derive(FromForm)]
 pub struct LoginForm {
@@ -41,16 +44,24 @@ pub fn login_get(flash: Option<FlashMessage>) -> Markup {
 
 #[post("/login", data = "<form_data>")]
 pub fn login_post(form_data: Form<LoginForm>, 
-                  database: &State<Arc<Mutex<Database>>>) -> Result<Redirect, Flash<Redirect>> {
-    if let Ok(database) = database.lock() {
-        match database.get_user(UserQuery::Username(&*form_data.into_inner().username)) {  
-            Ok(Some(user)) => {
-                Ok(Redirect::to("/home"))
-            },
-            Ok(None) => Err(Flash::error(Redirect::to(uri!("/login")), "Wrong username/password. Please try again!")),
-            Err(e) => Err(Flash::error(Redirect::to(uri!("/login")), e.to_string()))
-        }
+                  database: &State<Arc<Mutex<Database>>>,
+                  session_manager: &State<Arc<Mutex<SessionManager>>>,
+                  cookie_jar: &CookieJar) -> Result<Redirect, Flash<Redirect>> {
+    let form_data = form_data.into_inner();
+
+    if let Ok(database) = database.lock()
+        && let Ok(Some(user)) = database.get_user(UserQuery::Username(&form_data.username))
+        && user.password() == form_data.password
+        && let Ok(session_manager) = session_manager.lock() {
+        
+        cookie_jar.add_private(
+            Cookie::build(("session_id", session_manager.generate_session(user.username()).uuid().to_string()))
+                .path("/")
+                .http_only(true)
+        );
+
+        Ok(Redirect::to("/home"))
     } else {
-        Err(Flash::error(Redirect::to(uri!("/login")), "Failed to login, internal server error. (Failed to acquire lock on database)"))
-    }
+        Err(Flash::error(Redirect::to("/login"), INVALID_CREDENTIALS))
+    } 
 }

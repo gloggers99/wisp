@@ -1,5 +1,3 @@
-use beigebox_database::database::Database;
-
 use std::sync::{Arc, Mutex};
 
 use maud::{html, Markup};
@@ -9,7 +7,10 @@ use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
 
+use beigebox_core::messages::DATABASE_LOCK_FAILURE;
+
 use beigebox_database::user::User;
+use beigebox_database::database::Database;
 
 #[get("/signup")]
 pub fn signup_get(flash: Option<FlashMessage>) -> Markup {
@@ -39,17 +40,18 @@ pub fn signup_get(flash: Option<FlashMessage>) -> Markup {
 #[post("/signup", data="<signup_form>")]
 pub fn signup_post(signup_form: Form<User>,
                    database: &State<Arc<Mutex<Database>>>) -> Result<Redirect, Flash<Redirect>> {
+    // `if let` here to show when the database is clearly locked.
     if let Ok(database) = database.lock() {
         match database.add_user(signup_form.into_inner()) {
             Ok(()) => {
                 Ok(Redirect::to(uri!("/login")))
             },
+            // Failed to sign up.
             Err(e) => {
-                // Failed to sign up.
                 Err(Flash::error(Redirect::to(uri!("/signup")), e.to_string()))
             }
         }
     } else {
-        Err(Flash::error(Redirect::to(uri!("/signup")), "Internal server error, try again. (Failed to acquire database lock)"))
+        Err(Flash::error(Redirect::to(uri!("/signup")), DATABASE_LOCK_FAILURE))
     }
 }

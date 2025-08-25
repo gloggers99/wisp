@@ -23,6 +23,17 @@ pub struct Database {
         })
     }
     
+    pub fn get_all_users(&self) -> Result<Vec<User>, Box<dyn Error>> {
+        self.internal_database
+            .iter()
+            .map(|pair| {
+                let (_, value) = pair?;
+                let (user, _) = bincode::decode_from_slice(&value, standard())?;
+                Ok::<User, Box<dyn Error>>(user)
+            })
+            .collect()
+    }
+    
     pub fn get_user(&self, query: UserQuery) -> Result<Option<User>, Box<dyn Error>> {
         match query { 
             UserQuery::Username(username) => {
@@ -51,8 +62,6 @@ pub struct Database {
         let user_encoded = bincode::encode_to_vec(&user, standard())?;
         self.internal_database.insert(user.username(), user_encoded)?;
         self.internal_database.flush()?;
-        
-        eprintln!("Added {} to database.", user.username());
         
         Ok(())
     }
