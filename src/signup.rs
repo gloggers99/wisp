@@ -12,6 +12,17 @@ use beigebox_core::messages::DATABASE_LOCK_FAILURE;
 use beigebox_database::user::User;
 use beigebox_database::database::Database;
 
+#[derive(FromForm)]
+pub struct SignupForm {
+    email: String,
+    username: String,
+    password: String
+} impl Into<User> for SignupForm {
+    fn into(self) -> User {
+        User::new(self.email, self.username, self.password)
+    }
+}
+
 #[get("/signup")]
 pub fn signup_get(flash: Option<FlashMessage>) -> Markup {
     html!(
@@ -38,11 +49,11 @@ pub fn signup_get(flash: Option<FlashMessage>) -> Markup {
 }
 
 #[post("/signup", data="<signup_form>")]
-pub fn signup_post(signup_form: Form<User>,
+pub fn signup_post(signup_form: Form<SignupForm>,
                    database: &State<Arc<Mutex<Database>>>) -> Result<Redirect, Flash<Redirect>> {
     // `if let` here to show when the database is clearly locked.
     if let Ok(database) = database.lock() {
-        match database.add_user(signup_form.into_inner()) {
+        match database.add_user(signup_form.into_inner().into()) {
             Ok(()) => {
                 Ok(Redirect::to(uri!("/login")))
             },
