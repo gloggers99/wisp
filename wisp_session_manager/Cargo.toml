@@ -1,0 +1,11 @@
+[package]
+name = "wisp_session_manager"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+wisp_database = { path = "../wisp_database" }
+
+rocket = { version = "0.5.1", features = ["secrets"] }
+uuid = { version = "1.18.0", features = ["v4"] }
+dashmap = { version = "6.1.0", features = ["inline"] }
