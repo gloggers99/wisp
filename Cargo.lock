@@ -137,40 +137,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
 
 [[package]]
-name = "beigebox"
-version = "0.1.0"
-dependencies = [
- "beigebox_core",
- "beigebox_database",
- "beigebox_session_manager",
- "maud",
- "rocket",
-]
-
-[[package]]
-name = "beigebox_core"
-version = "0.1.0"
-
-[[package]]
-name = "beigebox_database"
-version = "0.1.0"
-dependencies = [
- "bincode",
- "rocket",
- "sled",
-]
-
-[[package]]
-name = "beigebox_session_manager"
-version = "0.1.0"
-dependencies = [
- "beigebox_database",
- "dashmap",
- "rocket",
- "uuid",
-]
-
-[[package]]
 name = "binascii"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2190,6 +2156,48 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf"
 dependencies = [
  "memchr",
+]
+
+[[package]]
+name = "wisp"
+version = "0.1.0"
+dependencies = [
+ "maud",
+ "rocket",
+ "wisp_core",
+ "wisp_database",
+ "wisp_pages",
+ "wisp_session_manager",
+]
+
+[[package]]
+name = "wisp_core"
+version = "0.1.0"
+
+[[package]]
+name = "wisp_database"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "rocket",
+ "sled",
+]
+
+[[package]]
+name = "wisp_pages"
+version = "0.1.0"
+dependencies = [
+ "maud",
+]
+
+[[package]]
+name = "wisp_session_manager"
+version = "0.1.0"
+dependencies = [
+ "dashmap",
+ "rocket",
+ "uuid",
+ "wisp_database",
 ]
 
 [[package]]

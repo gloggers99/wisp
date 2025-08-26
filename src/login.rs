@@ -1,16 +1,20 @@
 use std::sync::{Arc, Mutex};
 
-use maud::{html, Markup};
+use maud::{Markup};
 
 use rocket::form::Form;
 use rocket::http::{Cookie, CookieJar};
 use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
-use beigebox_core::messages::{INVALID_CREDENTIALS};
-use beigebox_database::database::{Database, UserQuery};
 
-use beigebox_session_manager::session_manager::SessionManager;
+use wisp_core::literals::{INVALID_CREDENTIALS};
+
+use wisp_database::database::{Database, UserQuery};
+
+use wisp_session_manager::session_manager::SessionManager;
+
+use wisp_pages::login::login_page;
 
 #[derive(FromForm)]
 pub struct LoginForm {
@@ -23,23 +27,10 @@ pub struct LoginForm {
 /// This will send `LoginForm` as a post request to the server.
 #[get("/login")]
 pub fn login_get(flash: Option<FlashMessage>) -> Markup {
-    html!(
-        (maud::DOCTYPE)
-        body {
-            @if let Some(flash) = flash {
-                p style="color:red; font-weight: bold;" { (flash.message()) }
-            }
-            form method="post" action="/login" {
-                label for="username" { "Username:" }
-                input type="text" name="username" id="username" required;
-                br;
-                label for="password" { "Password:" }
-                input type="password" name="password" id="password" required;
-                br;
-                button type="submit" { "Log In" }
-            }
-        }
-    )
+    match flash { 
+        Some(flash) => login_page(Some(flash.message())),
+        _ => login_page(None)
+    }
 }
 
 #[post("/login", data = "<form_data>")]

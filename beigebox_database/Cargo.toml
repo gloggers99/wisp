@@ -1,9 +1,0 @@
-[package]
-name = "beigebox_database"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-sled = "0.34.7"
-bincode = "2.0.1"
-rocket = { version = "0.5.1" }

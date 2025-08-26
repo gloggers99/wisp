@@ -5,9 +5,9 @@ use maud::{html, Markup};
 use rocket::response::Redirect;
 use rocket::State;
 
-use beigebox_database::database::Database;
+use wisp_database::database::Database;
 
-use beigebox_session_manager::authenticated_user::AuthenticatedUser;
+use wisp_session_manager::authenticated_user::AuthenticatedUser;
 
 #[get("/home")]
 pub fn home_get(user: AuthenticatedUser,
@@ -16,9 +16,15 @@ pub fn home_get(user: AuthenticatedUser,
     let all_users = database.get_all_users().unwrap();
     
     html!(
-        h1 { "Welcome, " (user.user.username()) "!" }
-        @for user in all_users {
-            p{ (user.email()) " " (user.username()) " " (user.password()) }
+        head {
+            link rel="stylesheet" href="/static/global_style.css" {}
+        }
+        
+        body {
+            h1 { "Welcome, " (user.user.username()) "!" }
+            @for user in all_users {
+                p{ (user.email()) " " (user.username()) " " (user.password()) }
+            }
         }
     )
 }

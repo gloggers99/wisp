@@ -7,10 +7,10 @@ use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
 
-use beigebox_core::messages::DATABASE_LOCK_FAILURE;
+use wisp_core::literals::DATABASE_LOCK_FAILURE;
 
-use beigebox_database::user::User;
-use beigebox_database::database::Database;
+use wisp_database::user::User;
+use wisp_database::database::Database;
 
 #[derive(FromForm)]
 pub struct SignupForm {
