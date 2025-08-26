@@ -2181,6 +2181,7 @@ dependencies = [
  "bincode",
  "rocket",
  "sled",
+ "uuid",
 ]
 
 [[package]]

@@ -19,7 +19,7 @@ pub struct SignupForm {
     password: String
 } impl Into<User> for SignupForm {
     fn into(self) -> User {
-        User::new(self.email, self.username, self.password)
+        User::new(self.email, self.username, self.password, None)
     }
 }
 
