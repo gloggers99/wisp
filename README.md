@@ -26,3 +26,16 @@ This is where the frontend lies. Written using [maud](https://crates.io/crates/m
 - `wisp_session_manager`
 
 This is where user authentication happens. This crate functions with `wisp_database` to create and monitor sessions.
+
+# Security
+
+As of right now there should be ZERO vulnerabilities in `wisp`.
+
+## Authentication process
+
+When a user logs in a unique session UUID is given to the user in a private cookie.
+
+As long as this user has this cookie in their browser for the session time (check `SESSION_TIME` in the 
+`session_manager.rs`) they will automatically be let into the website as an authenticated user.
+
+When the time runs out the session UUID will permanently be invalid.
