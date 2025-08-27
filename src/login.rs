@@ -25,9 +25,10 @@ pub struct LoginForm {
 /// This will send `LoginForm` as a post request to the server.
 #[get("/login")]
 pub fn login_get(flash: Option<FlashMessage>) -> Markup {
-    match flash { 
-        Some(flash) => login_page(Some(flash.message())),
-        _ => login_page(None)
+    if let Some(flash) = flash {
+        login_page(Some(flash.message()))
+    } else {
+        login_page(None)
     }
 }
 

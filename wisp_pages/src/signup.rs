@@ -1,10 +1,11 @@
 use maud::{html, Markup};
-
 use crate::{input_box, page_header, page_watermark};
+use crate::login::canvas;
 
-fn form() -> Markup {
+pub fn form() -> Markup {
     html!(
-        form class="my-6 font-lato" method="post" action="/login" {
+        form class="my-6 font-lato" method="post" action="signup" {
+            (input_box("email", "Email", false))
             (input_box("username", "Username", false))
             (input_box("password", "Password", true))
 
@@ -12,7 +13,7 @@ fn form() -> Markup {
                 class="w-full bg-[#f9bc60] hover:bg-[#f4845f] text-[#232946] font-semibold py-2 \
                        rounded-md transition duration-200 ease-in-out"
                 type="submit" {
-                "Log In"
+                "Sign Up"
             }
         }
     )
@@ -31,24 +32,17 @@ fn left_side(flash: Option<&str>) -> Markup {
                     "wisp" 
                 }
                 
-                h1 class="ml-1 inline-block text-2xl font-lato font-bold underline" { "Login" }
+                h1 class="ml-1 inline-block text-2xl font-lato font-bold underline" { "Sign Up" }
             }
             
             div class="h-1/2" {
                 (form())
-                a class="font-bold underline text-oxocarbon-magenta" href="/signup" { "or sign up..." }
             }
         }
     )
 }
 
-pub fn canvas() -> Markup {
-    html!(
-        div class="flex-1 hidden md:block bg-oxocarbon-magenta bg-cover bg-center" {}
-    )
-}
-
-pub fn login_page(flash: Option<&str>) -> Markup {
+pub fn signup_page(flash: Option<&str>) -> Markup {
     html!(
         (page_header())
         

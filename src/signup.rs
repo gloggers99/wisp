@@ -1,6 +1,6 @@
 use std::sync::{Arc, Mutex};
 
-use maud::{html, Markup};
+use maud::{Markup};
 
 use rocket::form::Form;
 use rocket::request::FlashMessage;
@@ -9,6 +9,8 @@ use rocket::State;
 
 use wisp_database::user::User;
 use wisp_database::database::Database;
+
+use wisp_pages::signup::signup_page;
 
 #[derive(FromForm)]
 pub struct SignupForm {
@@ -23,27 +25,11 @@ pub struct SignupForm {
 
 #[get("/signup")]
 pub fn signup_get(flash: Option<FlashMessage>) -> Markup {
-    html!(
-        (maud::DOCTYPE)
-        body {
-            @if let Some(flash) = flash {
-                p style="color:red; font-weight: bold;" { (flash.message()) }
-            }
-            form method="post" action="/signup" {
-                p {}
-                label for="email" { "Email:" }
-                input type="text" name="email" id="email" required;
-                br;
-                label for="username" { "Username:" }
-                input type="text" name="username" id="username" required;
-                br;
-                label for="password" { "Password:" }
-                input type="password" name="password" id="password" required;
-                br;
-                button type="submit" { "Sign Up" }
-            }
-        }
-    )
+    if let Some(flash) = flash {
+        signup_page(Some(flash.message()))
+    } else {
+        signup_page(None)
+    }
 }
 
 #[post("/signup", data="<signup_form>")]

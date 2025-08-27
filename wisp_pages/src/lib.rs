@@ -1,6 +1,7 @@
 use maud::{html, Markup};
 
 pub mod login;
+pub mod signup;
 
 pub(crate) static COMPILED_CSS: &'static str = include_str!("../tailwind/target/main.css");
 
