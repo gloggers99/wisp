@@ -2164,24 +2164,17 @@ version = "0.1.0"
 dependencies = [
  "maud",
  "rocket",
- "wisp_core",
  "wisp_database",
  "wisp_pages",
  "wisp_session_manager",
 ]
 
 [[package]]
-name = "wisp_core"
-version = "0.1.0"
-
-[[package]]
 name = "wisp_database"
 version = "0.1.0"
 dependencies = [
  "bincode",
- "rocket",
  "sled",
- "uuid",
 ]
 
 [[package]]

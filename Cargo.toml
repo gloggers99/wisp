@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-wisp_core = { path = "wisp_core" }
 wisp_database = { path = "wisp_database" }
 wisp_session_manager = { path = "wisp_session_manager" }
 wisp_pages = { path = "wisp_pages" }

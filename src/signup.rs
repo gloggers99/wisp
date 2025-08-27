@@ -7,8 +7,6 @@ use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
 
-use wisp_core::literals::DATABASE_LOCK_FAILURE;
-
 use wisp_database::user::User;
 use wisp_database::database::Database;
 
@@ -63,6 +61,6 @@ pub fn signup_post(signup_form: Form<SignupForm>,
             }
         }
     } else {
-        Err(Flash::error(Redirect::to(uri!("/signup")), DATABASE_LOCK_FAILURE))
+        Err(Flash::error(Redirect::to(uri!("/signup")), "Internal server error. (Failed to acquire lock on database)"))
     }
 }

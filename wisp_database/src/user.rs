@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 use bincode::{Decode, Encode};
-use uuid::Uuid;
 
 #[derive(Encode, Decode)]
 pub struct Post {

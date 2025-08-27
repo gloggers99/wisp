@@ -8,8 +8,6 @@ use rocket::request::FlashMessage;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
 
-use wisp_core::literals::{INVALID_CREDENTIALS};
-
 use wisp_database::database::{Database, UserQuery};
 
 use wisp_session_manager::session_manager::SessionManager;
@@ -53,6 +51,6 @@ pub fn login_post(form_data: Form<LoginForm>,
 
         Ok(Redirect::to("/home"))
     } else {
-        Err(Flash::error(Redirect::to("/login"), INVALID_CREDENTIALS))
+        Err(Flash::error(Redirect::to("/login"), "Invalid credentials."))
     } 
 }

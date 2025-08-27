@@ -2140,9 +2140,7 @@ name = "wisp_database"
 version = "0.1.0"
 dependencies = [
  "bincode",
- "rocket",
  "sled",
- "uuid",
 ]
 
 [[package]]

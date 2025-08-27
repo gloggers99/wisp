@@ -10,13 +10,6 @@ The `wisp` project is seperated between several crates.
 This is where everything comes together into a binary. The web server is powered by 
 [rocket](https://crates.io/crates/rocket).
 
-- `wisp_core`
-
-> [!CAUTION] 
-> This crate is planned on being removed.
-
-The core is where static variables and other code is stored for usage around the overall project.
-
 - `wisp_database`
 
 The database is where user data is stored. Security and speed are top priority here and neither are sacrificed. With the
