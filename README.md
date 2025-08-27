@@ -1,5 +1,5 @@
 # `wisp`
-An evolution of social media.
+A social media experiment
 
 # Structure
 
