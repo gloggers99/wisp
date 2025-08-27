@@ -2182,6 +2182,7 @@ name = "wisp_pages"
 version = "0.1.0"
 dependencies = [
  "maud",
+ "wisp_database",
 ]
 
 [[package]]

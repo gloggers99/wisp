@@ -1,7 +1,9 @@
 #[macro_use] extern crate rocket;
 
 use std::sync::{Arc, Mutex};
+
 use wisp_database::database::Database;
+
 use wisp_session_manager::session_manager::SessionManager;
 
 mod login;

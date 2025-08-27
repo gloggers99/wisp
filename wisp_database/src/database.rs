@@ -13,16 +13,18 @@ pub enum UserQuery<'a> {
     Username(&'a str)
 }
 
-/// This is a beigebox specific wrapper around sled.
+/// This is a wisp specific wrapper around sled.
 pub struct Database {
     internal_database: Db
 } impl Database {
+    /// Open a database directory.
     pub fn open<T: AsRef<Path>>(path: T) -> Result<Self, Box<dyn Error>> {
         Ok(Self {
             internal_database: sled::open(path)?
         })
     }
     
+    /// Attempt to get a vector of all the users on the database.
     pub fn get_all_users(&self) -> Result<Vec<User>, Box<dyn Error>> {
         self.internal_database
             .iter()
@@ -34,6 +36,7 @@ pub struct Database {
             .collect()
     }
     
+    /// Get a user by a `UserQuery`
     pub fn get_user(&self, query: UserQuery) -> Result<Option<User>, Box<dyn Error>> {
         match query { 
             UserQuery::Username(username) => {
