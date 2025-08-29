@@ -9,6 +9,7 @@ use wisp_session_manager::session_manager::SessionManager;
 mod login;
 mod signup;
 mod home;
+mod admin;
 
 #[launch]
 fn rocket() -> _ {
@@ -23,6 +24,9 @@ fn rocket() -> _ {
             signup::signup_post,
             
             home::home_get,
-            home::home_get_redirect
+            home::home_get_redirect,
+            
+            admin::admin_get,
+            admin::admin_redirect
         ])
 }

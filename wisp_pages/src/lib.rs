@@ -3,6 +3,7 @@ use maud::{html, Markup};
 pub mod login;
 pub mod signup;
 pub mod home;
+pub mod admin;
 
 pub(crate) static COMPILED_CSS: &'static str = include_str!("../tailwind/target/main.css");
 
@@ -26,7 +27,7 @@ pub(crate) fn page_header() -> Markup {
 pub(crate) fn page_watermark() -> Markup {
     html!(
         div class="fixed bottom-0 bg-oxocarbon-1 text-oxocarbon-foreground pl-3 pr-3 mb-3 \
-                   border-oxocarbon-magenta border-l-4 rounded-tr-sm rounded-br-sm font-mono" {
+                   border-oxocarbon-magenta border-l-4 rounded-tr-sm rounded-br-sm font-lato" {
             small { "made by Lucas Marta" }
         }
     )

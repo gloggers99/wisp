@@ -32,8 +32,12 @@ pub struct Session {
 }
 
 pub struct SessionManager {
+    /// `<Uuid /* Session identifier */, (Session /* Session struct */, String /* Username */)>`
+    // `DashMap` allows for interior mutability and thread safety. Theoretically it should be faster
+    // than std's hashmap.
     sessions: Arc<DashMap<Uuid, (Session, String)>>,
 } impl SessionManager {
+    /// Create an empty `SessionManager`.
     pub fn new() -> Self {
         let sessions: Arc<DashMap<Uuid, (Session, String)>> = Arc::new(DashMap::new());
         
@@ -55,13 +59,16 @@ pub struct SessionManager {
         });
         
         Self {
-            sessions
+            sessions,
         }
     }
     
     /// Generate a session for a username.
     /// 
     /// This session will be added to the sessions hashmap along with the username.
+    /// 
+    /// This function will return an owned copy of the session allocated which can later be used for
+    /// lookup.
     pub fn generate_session(&self, username: &str) -> Session {
         let mut session = Session::generate();
         
@@ -76,7 +83,7 @@ pub struct SessionManager {
         session
     }
     
-    /// Find session with O(1) complexity.
+    /// Retrieve session with O(1) complexity.
     pub fn get_session_by_uuid(&self, uuid: Uuid) -> Option<(Session, String)> {
         self.sessions.get(&uuid).map(|entry| entry.clone())
     }

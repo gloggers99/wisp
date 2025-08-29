@@ -16,6 +16,10 @@ pub struct AuthenticatedUser {
     pub user: User
 }
 
+/// AuthenticatedUser is a request guard for authentication enforcement. If a user attempts to GET
+/// or POST on anything with this in the parameters it will enforce logging in. This also provides
+/// a very simple interface for retrieving user information quickly.
+// Consider moving this outside of the crate to remove the rocket dependency from the Cargo.toml.
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for AuthenticatedUser {
     type Error = ();

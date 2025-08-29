@@ -53,12 +53,17 @@ pub struct Database {
     pub fn add_user(&self, user: User) -> Result<(), Box<dyn Error>> {
         // Check if user already exists.
         if let Ok(Some(_)) = self.get_user(UserQuery::Username(user.username())) {
-            Err(String::from("User already exists."))?
+            Err("User already exists.")?
         }
         
         // Check username for bad stuff & formatting.
         if user.username().contains(|c: char| !c.is_ascii_alphanumeric()) {
-            Err(String::from("Username can only contain letters and numbers."))?
+            Err("Username can only contain letters and numbers.")?
+        }
+        
+        // Check password for safety
+        if user.password().len() < 8 {
+            Err("Password must have at least 8 characters.")?
         }
         
         // User doesn't exist so we can add it to our database.
